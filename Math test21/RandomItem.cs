@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Animation;
 
 namespace Math_test21
 {
@@ -14,8 +10,8 @@ namespace Math_test21
         private int Randomnumber;
         private int mathkey;
 
-        
-        
+
+
         Dictionary<int, string> mathkeys = new Dictionary<int, string>()
         {
             {1,"+"},
@@ -26,13 +22,13 @@ namespace Math_test21
 
         public string MathOperationRandom()
         {
-            int RandomKey = randomint.Next(1,4);
+            int RandomKey = randomint.Next(1, 5);
             return mathkeys[RandomKey];
         }
 
         public int RandomNumbers()
         {
-           return Randomnumber = randomint.Next(1, 100);
+            return Randomnumber = randomint.Next(1, 100);
         }
     }
 }
