@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -11,79 +13,90 @@ namespace Math_test21
     /// </summary>
     public partial class MainWindow : Window
     {
+
         RandomItem randomItem = new RandomItem();
         MathOperations operations = new MathOperations();
         MyTime myTime = new MyTime();
+        DispatcherTimer timer = new DispatcherTimer();
+        private TimeSpan timeRemaning;
+        TimeSpan interval = new TimeSpan(0, 0, 1);
+        
+
+
 
         List<string> numbers1 = new List<string> { "Firstname", "Firstname2", "Firstname3", "Firstname4" };
         List<string> numbers2 = new List<string> { "Secondnum", "Secondnum2", "Secondnum3", "Secondnum4" };
-        List<string> mathoperation = new List<string> { "Mathoper", "Mathoper2", "Mathoper3", "Mathoper4" };
+        /*        List<string> mathoperation = new List<string> { "Mathoper", "Mathoper2", "Mathoper3", "Mathoper4" };
+        */
+        List<TextBlock> textBlocks = new List<TextBlock>()
+        {
+           new TextBlock { Text = "Text"  },
+           new TextBlock { Text = "Text"  }
+
+        };
 
         
-        DispatcherTimer timer = new DispatcherTimer();
-        /*TimeSpan time = new TimeSpan(0, 0, 30);*/
-        TimeSpan time;
-        TimeSpan interval = new TimeSpan(0, 0, 1);
 
-        
+       /* List<TextBox> mathoperation = new List<TextBox>(Mathoper);*/
 
-        /*   public TimeSpan SetTime(string TimeTo)
-           {
-               return time = TimeSpan.Parse(TimeTo);
-           }
-
-           public string GetTime()
-           {
-               return time.ToString();
-           }*/
-
-
-        public void StartTimer()
+        private void AddTextToList_Click()
         {
-            timer.Tick += new EventHandler(Timer_Tick);
-            timer.Interval = new TimeSpan(0, 0, 1);
-            timer.Start();
+            string text;
+            /*     foreach(string i in mathoperation)
+                 {
+
+                 }*/
         }
 
-        public void Timer_Tick(object? sender, EventArgs e)
-        {
-            TimeText.Text = time.ToString(@"mm\:ss");
-            time -= interval;
-        }
+
 
         public MainWindow()
         {
+
             InitializeComponent();
             NewGameButton.IsEnabled = false;
             CheckResultButton.IsEnabled = false;
-            
-
-
-
-
-
-            /*Допиши ебанную анимацию когда наводишься на кнопку и обратно*/
-
-            /* DoubleAnimation buttonAnimation = new DoubleAnimation() ;
-             RotateTransform rotateTransform1 = new RotateTransform() ;
-             rotateTransform1.Angle = 180 ;
-             rotateTransform1.BeginAnimation(rotateTransform1.Angle,TimeSpan.FromSeconds(3));
-             *//*    buttonAnimation.From = ButtonSettings.ActualWidth;
-                 buttonAnimation.To = 150;
-                 buttonAnimation.AutoReverse = true ;
-                 buttonAnimation.Duration = TimeSpan.FromSeconds(3);
-                 ButtonSettings.BeginAnimation(Button.WidthProperty, buttonAnimation);*/
-
-
-
+            foreach(TextBlock textBlock in textBlocks)
+            {
+                Grid grid = new Grid();
+                grid.Children.Add(textBlock);
+            }
 
         }
+ 
+        public void StartTimer()
+        {
+            timer.Interval = new TimeSpan(0, 0, 1);
+            timer.Tick += new EventHandler(Timer_Tick);
+            timer.Start();
+        }
+
+        public async void Timer_Tick(object? sender, EventArgs e)
+        {
+            /*timeRemaning = timeRemaning.Subtract(TimeSpan.FromSeconds(1));*/
+            timeRemaning -= interval;
+            await UpdateTimeLabel();
+
+            if (timeRemaning.TotalSeconds <= 0)
+            {
+                timer.Stop();
+
+                MessageBox.Show("Your time is over!");
+            }
+
+        }
+
+        private async Task UpdateTimeLabel()
+        {
+            TimeText.Text = timeRemaning.ToString(@"mm\:ss");
+        }
+
 
         private void ButtonSettings_Click(object sender, RoutedEventArgs e)
         {
             Settings settings = new Settings();
             settings.Show();
-            
+
         }
         //It seems like i have problem here
         public void ChangerBorderColor(Brush border, Color color)
@@ -95,56 +108,48 @@ namespace Math_test21
 
         private void StartQuest(object sender, RoutedEventArgs e)
         {
-            
-            GivevaluetoButtons();
+
             GiveMathOperation();
+            GivevaluetoButtons();
+            if (int.TryParse(baba.Text, out int userTime))
+            {
+                timeRemaning = TimeSpan.FromSeconds(userTime);
+                UpdateTimeLabel();
+                StartTimer();
 
-            /* TimeText.Text = time.getTime();*/
-            /*imeText.Text = time.time.ToString();*/
-            myTime.GetTime();
+            }
 
-            StartTimer(); 
-          
             StartQuestButton.IsEnabled = false;
             NewGameButton.IsEnabled = true;
             CheckResultButton.IsEnabled = true;
-
-
-
         }
         private void CheckResult(object sender, RoutedEventArgs e)
         {
-            Domath();
+            timer.Stop();
 
+            Domath();
         }
 
         private void GivevaluetoButtons()
         {
-            foreach (string number in numbers1)
-            {
-                Firstname.Text = randomItem.RandomNumbers().ToString();
-                Firstname2.Text = randomItem.RandomNumbers().ToString();
-                Firstname3.Text = randomItem.RandomNumbers().ToString();
-                Firstname4.Text = randomItem.RandomNumbers().ToString();
-            }
-            foreach (string number in numbers2)
-            {
-                Secondnum.Text = randomItem.RandomNumbers().ToString();
-                Secondnum2.Text = randomItem.RandomNumbers().ToString();
-                Secondnum3.Text = randomItem.RandomNumbers().ToString();
-                Secondnum4.Text = randomItem.RandomNumbers().ToString();
-            }
+            Firstname.Text = randomItem.RandomNumbers().ToString();
+            Firstname2.Text = randomItem.RandomNumbers().ToString();
+            Firstname3.Text = randomItem.RandomNumbers().ToString();
+            Firstname4.Text = randomItem.RandomNumbers().ToString();
+
+            Secondnum.Text = randomItem.RandomNumbers().ToString();
+            Secondnum2.Text = randomItem.RandomNumbers().ToString();
+            Secondnum3.Text = randomItem.RandomNumbers().ToString();
+            Secondnum4.Text = randomItem.RandomNumbers().ToString();
+
         }
 
         private void GiveMathOperation()
         {
-            foreach (string number in mathoperation)
-            {
-                Mathoper.Text = randomItem.MathOperationRandom();
-                Mathoper2.Text = randomItem.MathOperationRandom();
-                Mathoper3.Text = randomItem.MathOperationRandom();
-                Mathoper4.Text = randomItem.MathOperationRandom();
-            }
+            Mathoper.Text = randomItem.MathOperationRandom();
+            Mathoper2.Text = randomItem.MathOperationRandom();
+            Mathoper3.Text = randomItem.MathOperationRandom();
+            Mathoper4.Text = randomItem.MathOperationRandom();
         }
 
         private void Domath()
@@ -199,8 +204,9 @@ namespace Math_test21
         private void NewGame(object sender, RoutedEventArgs e)
         {
             NullResults();
-            GivevaluetoButtons();
             GiveMathOperation();
+            GivevaluetoButtons();
+
         }
     }
 }

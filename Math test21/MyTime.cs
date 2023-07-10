@@ -3,21 +3,38 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls.Primitives;
 
 namespace Math_test21
 {
      class MyTime
     {
-        TimeSpan time { get; set; }
+        private TimeSpan time { get; set; }
 
-        public TimeSpan SetTime(string TimeTo)
+        public TimeSpan Time
         {
-            return time = TimeSpan.Parse(TimeTo);
+            get { return time; }
+            set
+            {
+                time = value;
+                
+            }
+        }
+
+        
+
+        
+
+        /*public TimeSpan SetTime(int TimeTo)
+        {
+            return this.time = TimeSpan.FromSeconds(TimeTo);
+            
         }
 
         public string GetTime()
         {
-            return time.ToString();
-        }
+            return time.ToString() ;
+        }*/
     }
 }

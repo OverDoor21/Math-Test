@@ -17,8 +17,10 @@ namespace Math_test21
         {
             MyTime time = new MyTime();
             InitializeComponent();
-            TimeTo.Text = 30.ToString();
-            time.SetTime(TimeTo.Text);
+            TimeTo.Text = time.Time.ToString();
+
+            
+
 
 
         }

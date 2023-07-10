@@ -39,8 +39,11 @@ namespace Math_test21
                 return Addition(x, y);
             if (parametr == "-")
                 return Subtraction(x, y);
-            if (parametr == "/")
+            if (parametr == "/") {
+                x = RandomNumbersForSubtraction(x);
+                y = RandomNumberSecondnumberSub(y);
                 return Division(x, y);
+                 }
             if (parametr == "*")
                 return Multiplication(x, y);
             return default;
