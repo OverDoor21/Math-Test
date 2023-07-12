@@ -40,8 +40,7 @@ namespace Math_test21
             if (parametr == "-")
                 return Subtraction(x, y);
             if (parametr == "/") {
-                x = RandomNumbersForSubtraction(x);
-                y = RandomNumberSecondnumberSub(y);
+
                 return Division(x, y);
                  }
             if (parametr == "*")

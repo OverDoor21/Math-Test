@@ -14,56 +14,81 @@ namespace Math_test21
     public partial class MainWindow : Window
     {
 
+        TextBlock Mathoper = new TextBlock()
+        {
+            Text = "?"
+        };
+
+        TextBlock Mathoper2 = new TextBlock()
+        {
+
+            Text = "?"
+        };
+
+        TextBlock Mathoper3 = new TextBlock()
+        {
+
+            Text = "?"
+        };
+
+        TextBlock Mathoper4 = new TextBlock()
+        {
+
+            Text = "?"
+        };
+
+
+
         RandomItem randomItem = new RandomItem();
         MathOperations operations = new MathOperations();
         MyTime myTime = new MyTime();
         DispatcherTimer timer = new DispatcherTimer();
         private TimeSpan timeRemaning;
         TimeSpan interval = new TimeSpan(0, 0, 1);
-        
+        Grid grid = new Grid();
 
 
 
         List<string> numbers1 = new List<string> { "Firstname", "Firstname2", "Firstname3", "Firstname4" };
         List<string> numbers2 = new List<string> { "Secondnum", "Secondnum2", "Secondnum3", "Secondnum4" };
-        /*        List<string> mathoperation = new List<string> { "Mathoper", "Mathoper2", "Mathoper3", "Mathoper4" };
-        */
-        List<TextBlock> textBlocks = new List<TextBlock>()
-        {
-           new TextBlock { Text = "Text"  },
-           new TextBlock { Text = "Text"  }
-
-        };
-
-        
-
-       /* List<TextBox> mathoperation = new List<TextBox>(Mathoper);*/
-
-        private void AddTextToList_Click()
-        {
-            string text;
-            /*     foreach(string i in mathoperation)
-                 {
-
-                 }*/
-        }
-
 
 
         public MainWindow()
         {
 
             InitializeComponent();
+
             NewGameButton.IsEnabled = false;
             CheckResultButton.IsEnabled = false;
-            foreach(TextBlock textBlock in textBlocks)
+
+
+
+            List<TextBlock> MathOpers = new List<TextBlock>
             {
-                Grid grid = new Grid();
-                grid.Children.Add(textBlock);
+                Mathoper,
+                Mathoper2,
+                Mathoper3,
+                Mathoper4
+            };
+
+            foreach (TextBlock textBlocks in MathOpers)
+            {
+
+                Grid.SetColumn(textBlocks, 2);
+                Grid.SetRow(Mathoper, 1);
+                Grid.SetRow(Mathoper2, 2);
+                Grid.SetRow(Mathoper3, 3);
+                Grid.SetRow(Mathoper4, 4);
+
+
+
+
+                Gridik.Children.Add(textBlocks);
             }
 
+
         }
- 
+
         public void StartTimer()
         {
             timer.Interval = new TimeSpan(0, 0, 1);
@@ -73,7 +98,7 @@ namespace Math_test21
 
         public async void Timer_Tick(object? sender, EventArgs e)
         {
-            /*timeRemaning = timeRemaning.Subtract(TimeSpan.FromSeconds(1));*/
+
             timeRemaning -= interval;
             await UpdateTimeLabel();
 
@@ -81,7 +106,7 @@ namespace Math_test21
             {
                 timer.Stop();
 
-                MessageBox.Show("Your time is over!");
+                MessageBox.Show($"Your time is over!{Counter.GetCount()} ");
             }
 
         }
@@ -106,15 +131,18 @@ namespace Math_test21
         }
 
 
-        private void StartQuest(object sender, RoutedEventArgs e)
+        private async void StartQuest(object sender, RoutedEventArgs e)
         {
-
+            CMBChangeYourTime.Visibility = Visibility.Collapsed;
             GiveMathOperation();
+
+
+
             GivevaluetoButtons();
-            if (int.TryParse(baba.Text, out int userTime))
+            if (int.TryParse(GetComboTextValue(CMBChangeYourTime), out int userTime))
             {
                 timeRemaning = TimeSpan.FromSeconds(userTime);
-                UpdateTimeLabel();
+                await UpdateTimeLabel();
                 StartTimer();
 
             }
@@ -132,15 +160,48 @@ namespace Math_test21
 
         private void GivevaluetoButtons()
         {
-            Firstname.Text = randomItem.RandomNumbers().ToString();
-            Firstname2.Text = randomItem.RandomNumbers().ToString();
-            Firstname3.Text = randomItem.RandomNumbers().ToString();
-            Firstname4.Text = randomItem.RandomNumbers().ToString();
+            if (Mathoper.Text.Contains("/"))
+            {
+                Firstname.Text = randomItem.RandomNumbersForSubtraction().ToString();
+                Secondnum.Text = randomItem.RandomNumberSecondnumberSub().ToString();
+            }
+            else
+            {
+                Firstname.Text = randomItem.RandomNumbers().ToString();
+                Secondnum.Text = randomItem.RandomNumbers().ToString();
+            }
+            if (Mathoper2.Text.Contains("/"))
+            {
+                Firstname2.Text = randomItem.RandomNumbersForSubtraction().ToString();
+                Secondnum2.Text = randomItem.RandomNumberSecondnumberSub().ToString();
+            }
+            else
+            {
+                Firstname2.Text = randomItem.RandomNumbers().ToString();
+                Secondnum2.Text = randomItem.RandomNumbers().ToString();
+            }
+            if (Mathoper3.Text.Contains("/"))
+            {
+                Firstname3.Text = randomItem.RandomNumbersForSubtraction().ToString();
+                Secondnum3.Text = randomItem.RandomNumberSecondnumberSub().ToString();
+            }
+            else
+            {
+                Firstname3.Text = randomItem.RandomNumbers().ToString();
+                Secondnum3.Text = randomItem.RandomNumbers().ToString();
+            }
+            if (Mathoper4.Text.Contains("/"))
+            {
+                Firstname4.Text = randomItem.RandomNumbersForSubtraction().ToString();
+                Secondnum4.Text = randomItem.RandomNumberSecondnumberSub().ToString();
+            }
+            else
+            {
+                Firstname4.Text = randomItem.RandomNumbers().ToString();
+                Secondnum4.Text = randomItem.RandomNumbers().ToString();
+            }
 
-            Secondnum.Text = randomItem.RandomNumbers().ToString();
-            Secondnum2.Text = randomItem.RandomNumbers().ToString();
-            Secondnum3.Text = randomItem.RandomNumbers().ToString();
-            Secondnum4.Text = randomItem.RandomNumbers().ToString();
+
 
         }
 
@@ -192,7 +253,7 @@ namespace Math_test21
 
         private void NullResults()
         {
-            Counter.NullCount();
+
             Resultbox1.Text = null;
             Resultbox2.Text = null;
             Resultbox3.Text = null;
@@ -208,5 +269,23 @@ namespace Math_test21
             GivevaluetoButtons();
 
         }
+
+
+        private string GetComboTextValue(ComboBox comboBox)
+        {
+            if (comboBox.SelectedItem != null)
+            {
+                ComboBoxItem item = (ComboBoxItem)comboBox.SelectedItem;
+                string result = item.Content.ToString();
+                return result;  
+            }
+
+            else
+            {
+                 string UserInput = comboBox.Text;
+                return UserInput;
+            }
+        }
+
     }
 }

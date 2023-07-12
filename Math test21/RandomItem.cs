@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Controls;
 
 namespace Math_test21
 {
     class RandomItem
     {
         Random randomint = new Random();
-       
+
         //be carefull changed from public to private
         private int Randomnumber;
-     
-
-
-
 
 
         Dictionary<int, string> mathkeys = new Dictionary<int, string>()
@@ -36,29 +31,31 @@ namespace Math_test21
             return Randomnumber = randomint.Next(1, 100);
         }
 
-         public int RandomNumbersForSubtraction(int value)
+        public int RandomNumbersForSubtraction()
         {
-            /*int value = randomint.Next(20, 100);*/
-            if(value % 2 == 0)
+            int value = randomint.Next(20, 100);
+            if (value % 2 == 0)
             {
                 return value;
             }
             else
             {
-                return RandomNumbersForSubtraction(value - 1);
+                value--;
+                return RandomNumbersForSubtraction();
             }
-            
+
         }
-         public int RandomNumberSecondnumberSub(int value)
+        public int RandomNumberSecondnumberSub()
         {
-            
-            if(value %2 == 0)
+            int value = randomint.Next(1,10);
+            if (value % 2 == 0)
             {
                 return value;
             }
             else
             {
-               return RandomNumberSecondnumberSub(value- 1);
+                value--;
+                return RandomNumberSecondnumberSub();
             }
         }
     }
