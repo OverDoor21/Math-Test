@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,7 +59,7 @@ namespace Math_test21
 
             InitializeComponent();
 
-            NewGameButton.IsEnabled = false;
+          
             CheckResultButton.IsEnabled = false;
 
 
@@ -105,8 +106,8 @@ namespace Math_test21
             if (timeRemaning.TotalSeconds <= 0)
             {
                 timer.Stop();
-
-                MessageBox.Show($"Your time is over!{Counter.GetCount()} ");
+                Domath();
+                MessageBox.Show($"Your time is over!{Counter.GetCount()}","Time is over");
             }
 
         }
@@ -135,9 +136,6 @@ namespace Math_test21
         {
             CMBChangeYourTime.Visibility = Visibility.Collapsed;
             GiveMathOperation();
-
-
-
             GivevaluetoButtons();
             if (int.TryParse(GetComboTextValue(CMBChangeYourTime), out int userTime))
             {
@@ -148,14 +146,24 @@ namespace Math_test21
             }
 
             StartQuestButton.IsEnabled = false;
-            NewGameButton.IsEnabled = true;
+            
             CheckResultButton.IsEnabled = true;
         }
         private void CheckResult(object sender, RoutedEventArgs e)
         {
             timer.Stop();
-
             Domath();
+            var result = MessageBox.Show($"Your score are : {Counter.GetCount()} Well Done!", "Would you like to retry?", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                string currentExecutablePath = Process.GetCurrentProcess().MainModule.FileName;
+                Process.Start(currentExecutablePath);
+                Application.Current.Shutdown();
+            }
+            else
+            {
+                this.Close();
+            }
         }
 
         private void GivevaluetoButtons()
@@ -249,27 +257,6 @@ namespace Math_test21
             catch { }
 
         }
-
-
-        private void NullResults()
-        {
-
-            Resultbox1.Text = null;
-            Resultbox2.Text = null;
-            Resultbox3.Text = null;
-            Resultbox4.Text = null;
-
-
-        }
-
-        private void NewGame(object sender, RoutedEventArgs e)
-        {
-            NullResults();
-            GiveMathOperation();
-            GivevaluetoButtons();
-
-        }
-
 
         private string GetComboTextValue(ComboBox comboBox)
         {
